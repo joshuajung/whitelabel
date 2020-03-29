@@ -1,0 +1,8 @@
+# GLOBAL
+node_modules
+
+# WEB
+web/.next
+
+# BACKEND
+backend/dist

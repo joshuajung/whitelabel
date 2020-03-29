@@ -2,7 +2,7 @@
 node_modules
 
 # WEB
-web/.next
+.next
 
 # BACKEND
-backend/dist
+dist

@@ -1,25 +1,24 @@
 import { Provider } from "mobx-react"
 import { getSnapshot } from "mobx-state-tree"
-import App, { AppContext } from "next/app"
+import App, { AppContext, AppInitialProps, AppProps } from "next/app"
 import React from "react"
 import { initializeStore, StoreInstance, StoreSnapshotOut } from "../stores/store"
 
-interface Props {
+interface CustomProps {
   isServer: boolean
   initialState: StoreSnapshotOut
-  pageProps: any
 }
 
 class MyApp extends App {
   // This is where we keep our store
   private store: StoreInstance
 
-  constructor(props: any) {
+  constructor(props: CustomProps & AppProps) {
     super(props)
     this.store = initializeStore(props.isServer, props.initialState) as StoreInstance
   }
 
-  public static getInitialProps = async (appContext: AppContext): Promise<Props> => {
+  public static getInitialProps = async (appContext: AppContext): Promise<CustomProps & AppInitialProps> => {
     //
     // Use getInitialProps as a step in the lifecycle when
     // we can initialize our store

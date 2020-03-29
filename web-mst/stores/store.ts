@@ -4,33 +4,26 @@ export type StoreInstance = Instance<typeof Store>
 export type StoreSnapshotIn = SnapshotIn<typeof Store>
 export type StoreSnapshotOut = SnapshotOut<typeof Store>
 
-const Store = types
+const Counter = types
   .model({
-    foo: types.number,
-    lastUpdate: types.Date,
-    light: types.boolean
+    id: types.identifier,
+    name: types.string,
+    currentTime: types.Date,
+    value: types.integer
   })
-  .actions(self => {
-    let timer: NodeJS.Timeout
-    const start = () => {
-      timer = setInterval(() => {
-        ;(self as any).update()
-      }, 1000)
+  .actions(self => ({
+    countUp: () => {
+      self.value++
     }
-    const update = () => {
-      self.lastUpdate = new Date(Date.now())
-      self.light = true
-    }
-    const stop = () => {
-      clearInterval(timer)
-    }
-    const countUp = () => {
-      self.foo++
-    }
-    return { start, stop, update, countUp }
-  })
+  }))
 
-const storeDefaults: StoreSnapshotIn = { foo: 6, lastUpdate: Date.now(), light: false }
+const Store = types.model({
+  counters: types.map(Counter)
+})
+
+const storeDefaults: StoreSnapshotIn = {
+  counters: { "default-counter": { id: "default-counter", name: "Default Counter", currentTime: new Date(), value: 0 } }
+}
 
 // This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.
 export const initializeStore = (isServer: boolean, snapshot?: StoreSnapshotIn) => {

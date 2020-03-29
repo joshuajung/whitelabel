@@ -1,20 +1,23 @@
 import React from "react"
-import { inject, observer } from "mobx-react"
-import { StoreInstance } from "../stores/store"
+import { observer } from "mobx-react"
+import Link from "next/link"
 
 interface Props {
-  store?: StoreInstance
+  counter: any
 }
 
-@inject("store")
 @observer
 class CounterComponent extends React.Component<Props> {
   public render() {
     return (
-      <div>
-        Counter: {this.props.store?.foo}
-        <input type="button" value="Count up" onClick={() => this.props.store?.countUp()} />
-      </div>
+      <li>
+        <Link href="/[id]" as={`${this.props.counter.id}`}>
+          <a>
+            {this.props.counter.name}: {this.props.counter.value}
+          </a>
+        </Link>{" "}
+        <input type="button" value="Count up" onClick={() => this.props.counter.countUp()} />
+      </li>
     )
   }
 }

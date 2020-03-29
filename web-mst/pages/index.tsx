@@ -1,13 +1,25 @@
 import React from "react"
-import { SampleComponent } from "../components/SampleComponent"
+import { inject, observer } from "mobx-react"
+import { StoreInstance } from "../stores/store"
+import { values } from "mobx"
 import CounterComponent from "../components/CounterComponent"
 
-class IndexPage extends React.Component {
+interface Props {
+  store?: StoreInstance
+}
+
+@inject("store")
+@observer
+class IndexPage extends React.Component<Props> {
   public render() {
     return (
       <div>
-        <SampleComponent title={"Index Page"} linkTo="/other" />
-        <CounterComponent />
+        <p>Counters:</p>
+        <ul>
+          {values(this.props.store?.counters).map(c => (
+            <CounterComponent counter={c} key={c.id} />
+          ))}
+        </ul>
       </div>
     )
   }

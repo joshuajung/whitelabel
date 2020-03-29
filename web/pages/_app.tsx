@@ -1,23 +1,54 @@
-import App, { AppProps } from "next/app"
-import * as React from "react"
-import { rootStore, RootStoreContext } from "../store/RootStore"
-import HeaderComponent from "../components/HeaderComponent"
+import { Provider } from "mobx-react"
+import { getSnapshot } from "mobx-state-tree"
+import App, { AppContext, AppInitialProps, AppProps } from "next/app"
+import React from "react"
+import { CustomNextPageContext } from "../interfaces/CustomNextPageContext"
+import { initializeStore, StoreInstance, StoreSnapshotOut } from "../stores/store"
 
-class MyApp extends React.Component<AppProps> {
-  public render() {
-    console.log("Rendering App")
-    return (
-      <RootStoreContext.Provider value={rootStore}>
-        <HeaderComponent />
-        <this.props.Component {...this.props.pageProps} />
-      </RootStoreContext.Provider>
-    )
+interface CustomInitalProps {
+  initialStoreSnapshot: StoreSnapshotOut
+}
+type InitialProps = AppInitialProps & CustomInitalProps
+type Props = AppProps & CustomInitalProps
+
+export type MyAppContext = AppContext & { ctx: CustomNextPageContext }
+
+class CustomApp extends App<Props> {
+  // This is where we keep our store
+  private store: StoreInstance
+
+  public static getInitialProps = async (appContext: MyAppContext): Promise<InitialProps> => {
+    // Initialize the store already on the server
+    const store = initializeStore()
+    // Add the store to the app context, so we can use it in getInitialProps of pages
+    appContext.ctx.store = store
+    // If the page to be opened has getInitialProps, run it and provide the page context
+    let pageProps = {}
+    if (appContext.Component.getInitialProps) {
+      pageProps = await appContext.Component.getInitialProps(appContext.ctx)
+    }
+    // Provide the snapshot of the just created store, so we can reuse it in the constructor
+    // and it gets serialized and transported to the frontend
+    return {
+      initialStoreSnapshot: getSnapshot(store),
+      pageProps
+    }
   }
 
-  public static getInitialProps = async appContext => {
-    const appProps = await App.getInitialProps(appContext)
-    return { ...appProps }
+  constructor(props: Props) {
+    super(props)
+    // Resurrect the store from its serialized snapshot out of getInitialProps.
+    // We will use this from now on.
+    this.store = initializeStore(props.initialStoreSnapshot)
+  }
+
+  public render() {
+    return (
+      <Provider store={this.store}>
+        <this.props.Component {...this.props.pageProps} />
+      </Provider>
+    )
   }
 }
 
-export default MyApp
+export default CustomApp

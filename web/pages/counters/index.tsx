@@ -1,8 +1,8 @@
-import React from "react"
 import { inject, observer } from "mobx-react"
-import { StoreInstance } from "../stores/store"
-import CounterComponent from "../components/CounterComponent"
-import { MyNextPageContext } from "./_app"
+import React from "react"
+import CounterComponent from "../../components/CounterComponent"
+import { StoreInstance } from "../../stores/store"
+import { CustomNextPageContext } from "../../interfaces/CustomNextPageContext"
 
 interface Props {
   store?: StoreInstance
@@ -11,7 +11,7 @@ interface Props {
 @inject("store")
 @observer
 class IndexPage extends React.Component<Props> {
-  static async getInitialProps(ctx: MyNextPageContext) {
+  static async getInitialProps(ctx: CustomNextPageContext) {
     await ctx.store?.fetchCounters()
     return {}
   }

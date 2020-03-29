@@ -1,27 +1,26 @@
 {
   "name": "web",
   "version": "1.0.0",
-  "license": "MIT",
   "scripts": {
     "local": "next -p 3001",
     "dev": "next",
     "build": "next build",
-    "start": "next start -p 3001"
+    "start": "next start"
   },
   "dependencies": {
-    "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
-    "mobx": "^5.15.4",
+    "mobx": "^5.9.0",
     "mobx-react": "^6.1.8",
+    "mobx-state-tree": "^3.11.0",
     "next": "^9.3.2",
-    "node-sass": "^4.13.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
     "@types/node": "^13.9.5",
-    "@types/react": "^16.9.26",
-    "typescript": "^3.8.3"
-  }
+    "@types/react": "^16.4.12"
+  },
+  "license": "ISC"
 }

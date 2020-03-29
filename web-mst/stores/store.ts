@@ -1,4 +1,5 @@
-import { applySnapshot, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { applySnapshot, Instance, SnapshotIn, SnapshotOut, types, flow } from "mobx-state-tree"
+import Axios, { AxiosResponse } from "axios"
 
 export type StoreInstance = Instance<typeof Store>
 export type StoreSnapshotIn = SnapshotIn<typeof Store>
@@ -11,15 +12,38 @@ export const Counter = types
     currentTime: types.Date,
     value: types.integer
   })
-  .actions(self => ({
-    countUp: () => {
+  .actions(self => {
+    const countUp = () => {
       self.value++
     }
-  }))
+    return { countUp }
+  })
 
-const Store = types.model({
-  counters: types.map(Counter)
-})
+const Store = types
+  .model({
+    counters: types.map(Counter)
+  })
+  .actions(self => {
+    const fetchCounters = flow(function*() {
+      try {
+        const result: AxiosResponse = yield Axios.get("http://localhost:3000/demoDtoList")
+        result.data.forEach((c: any) => {
+          self.counters.put(c)
+        })
+      } catch (error) {
+        console.error("Failed to fetch counters", error)
+      }
+    })
+    const fetchCounter = flow(function*(counterId: string) {
+      try {
+        const result: AxiosResponse = yield Axios.get(`http://localhost:3000/${counterId}`)
+        self.counters.put(result.data)
+      } catch (error) {
+        console.error("Failed to fetch counters", error)
+      }
+    })
+    return { fetchCounters, fetchCounter }
+  })
 
 const storeDefaults: StoreSnapshotIn = {
   counters: { "default-counter": { id: "default-counter", name: "Default Counter", currentTime: new Date(), value: 0 } }

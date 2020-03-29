@@ -3,13 +3,19 @@ import { getSnapshot } from "mobx-state-tree"
 import App, { AppContext, AppInitialProps, AppProps } from "next/app"
 import React from "react"
 import { initializeStore, StoreInstance, StoreSnapshotOut } from "../stores/store"
+import { NextPageContext } from "next"
 
 interface CustomProps {
   isServer: boolean
   initialState: StoreSnapshotOut
 }
 
-class MyApp extends App {
+export interface MyNextPageContext extends NextPageContext {
+  store?: StoreInstance
+}
+export type MyAppContext = AppContext & { ctx: MyNextPageContext }
+
+class MyApp extends App<CustomProps> {
   // This is where we keep our store
   private store: StoreInstance
 
@@ -18,13 +24,16 @@ class MyApp extends App {
     this.store = initializeStore(props.isServer, props.initialState) as StoreInstance
   }
 
-  public static getInitialProps = async (appContext: AppContext): Promise<CustomProps & AppInitialProps> => {
+  public static getInitialProps = async (appContext: MyAppContext): Promise<CustomProps & AppInitialProps> => {
     //
     // Use getInitialProps as a step in the lifecycle when
     // we can initialize our store
     //
     const isServer = typeof window === "undefined"
     const store = initializeStore(isServer)
+    // Create an extended app context that includes the store
+    appContext.ctx.store = store
+
     //
     // Check whether the page being rendered by the App has a
     // static getInitialProps method and if so call it

@@ -10,8 +10,13 @@ export class AppController {
     return this.appService.getHello()
   }
 
-  @Get("demoDtoObject")
-  getDemoDto() {
-    return { id: "demoDtoObject", name: "Hello", currentTime: new Date() }
+  @Get("demoDtoSingle")
+  getDemoDtoSingle() {
+    return { id: "demoDtoSingle", name: "Hello", currentTime: 0, value: 23 }
+  }
+
+  @Get("demoDtoList")
+  getDemoDtoList() {
+    return [{ id: "demoDtoSingle", name: "Hello", currentTime: 0, value: 23 }]
   }
 }

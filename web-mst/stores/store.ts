@@ -4,7 +4,7 @@ export type StoreInstance = Instance<typeof Store>
 export type StoreSnapshotIn = SnapshotIn<typeof Store>
 export type StoreSnapshotOut = SnapshotOut<typeof Store>
 
-const Counter = types
+export const Counter = types
   .model({
     id: types.identifier,
     name: types.string,

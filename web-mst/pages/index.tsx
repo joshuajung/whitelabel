@@ -16,7 +16,7 @@ class IndexPage extends React.Component<Props> {
       <div>
         <p>Counters:</p>
         <ul>
-          {values(this.props.store?.counters).map(c => (
+          {[...this.props.store?.counters.values()].map(c => (
             <CounterComponent counter={c} key={c.id} />
           ))}
         </ul>

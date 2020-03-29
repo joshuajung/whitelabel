@@ -1,21 +1,19 @@
 import { applySnapshot, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 
-let store: IStore = null as any
+export type StoreInstance = Instance<typeof Store>
+export type StoreSnapshotIn = SnapshotIn<typeof Store>
+export type StoreSnapshotOut = SnapshotOut<typeof Store>
 
 const Store = types
   .model({
     foo: types.number,
     lastUpdate: types.Date,
-    light: false
+    light: types.boolean
   })
   .actions(self => {
-    let timer: any
+    let timer: NodeJS.Timeout
     const start = () => {
       timer = setInterval(() => {
-        // mobx-state-tree doesn't allow anonymous callbacks changing data.
-        // Pass off to another action instead (need to cast self as any
-        // because typescript doesn't yet know about the actions we're
-        // adding to self here)
         ;(self as any).update()
       }, 1000)
     }
@@ -26,20 +24,26 @@ const Store = types
     const stop = () => {
       clearInterval(timer)
     }
-    return { start, stop, update }
+    const countUp = () => {
+      self.foo++
+    }
+    return { start, stop, update, countUp }
   })
 
-export type IStore = Instance<typeof Store>
-export type IStoreSnapshotIn = SnapshotIn<typeof Store>
-export type IStoreSnapshotOut = SnapshotOut<typeof Store>
+const storeDefaults: StoreSnapshotIn = { foo: 6, lastUpdate: Date.now(), light: false }
 
-export const initializeStore = (isServer: any, snapshot = null) => {
+// This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.
+export const initializeStore = (isServer: boolean, snapshot?: StoreSnapshotIn) => {
+  let store: StoreInstance | null = null
+  // If we are on the server, create a store from scratch
   if (isServer) {
-    store = Store.create({ foo: 6, lastUpdate: Date.now(), light: false })
+    store = Store.create(storeDefaults)
   }
-  if ((store as any) === null) {
-    store = Store.create({ foo: 6, lastUpdate: Date.now(), light: false })
+  // If there is no store instance yet, create a store instance
+  if (store === null) {
+    store = Store.create(storeDefaults)
   }
+  // If a snapshot is provided, apply the snapshot to the store
   if (snapshot) {
     applySnapshot(store, snapshot)
   }

@@ -1,11 +1,11 @@
 import { inject, observer } from "mobx-react"
 import Link from "next/link"
 import React from "react"
-import { IStore } from "../stores/store"
+import { StoreInstance } from "../stores/store"
 import { Clock } from "./Clock"
 
 interface IOwnProps {
-  store?: IStore
+  store?: StoreInstance
   title: string
   linkTo: string
 }

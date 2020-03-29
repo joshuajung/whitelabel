@@ -1,16 +1,25 @@
 import { Provider } from "mobx-react"
 import { getSnapshot } from "mobx-state-tree"
-import App from "next/app"
+import App, { AppContext } from "next/app"
 import React from "react"
-import { initializeStore, IStore } from "../stores/store"
+import { initializeStore, StoreInstance, StoreSnapshotOut } from "../stores/store"
 
-interface IOwnProps {
+interface Props {
   isServer: boolean
-  initialState: IStore
+  initialState: StoreSnapshotOut
+  pageProps: any
 }
 
 class MyApp extends App {
-  public static async getInitialProps({ Component, router, ctx }: any) {
+  // This is where we keep our store
+  private store: StoreInstance
+
+  constructor(props: any) {
+    super(props)
+    this.store = initializeStore(props.isServer, props.initialState) as StoreInstance
+  }
+
+  public static getInitialProps = async (appContext: AppContext): Promise<Props> => {
     //
     // Use getInitialProps as a step in the lifecycle when
     // we can initialize our store
@@ -22,8 +31,8 @@ class MyApp extends App {
     // static getInitialProps method and if so call it
     //
     let pageProps = {}
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
+    if (appContext.Component.getInitialProps) {
+      pageProps = await appContext.Component.getInitialProps(appContext.ctx)
     }
     return {
       initialState: getSnapshot(store),
@@ -32,18 +41,10 @@ class MyApp extends App {
     }
   }
 
-  private store: IStore
-
-  constructor(props: any) {
-    super(props)
-    this.store = initializeStore(props.isServer, props.initialState) as IStore
-  }
-
   public render() {
-    const { Component, pageProps } = this.props
     return (
       <Provider store={this.store}>
-        <Component {...pageProps} />
+        <this.props.Component {...this.props.pageProps} />
       </Provider>
     )
   }

@@ -2,7 +2,7 @@ import React from "react"
 import { observer } from "mobx-react"
 import Link from "next/link"
 import { Instance } from "mobx-state-tree"
-import { Counter } from "../stores/store"
+import { Counter } from "../store/models/Counter"
 
 interface Props {
   counter: Instance<typeof Counter>
@@ -13,7 +13,7 @@ class CounterComponent extends React.Component<Props> {
   public render() {
     return (
       <li>
-        <Link href="/[id]" as={`${this.props.counter.id}`}>
+        <Link href="/counters/[id]" as={`/counters/${this.props.counter.id}`}>
           <a>
             {this.props.counter.name}: {this.props.counter.value}
           </a>

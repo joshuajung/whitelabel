@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StoreInstance } from "../../stores/store"
+import { StoreInstance } from "../../store/RootStore"
 import { inject, observer } from "mobx-react"
 import CounterComponent from "../../components/CounterComponent"
 import { withRouter } from "next/router"
@@ -19,11 +19,11 @@ class CounterPage extends React.Component<Props & WithRouterProps> {
   }
 
   private get counter() {
-    return this.props.store?.counters.get(this.counterId)
+    return this.props.store?.counterStore.counters.get(this.counterId)
   }
 
   static async getInitialProps(ctx: CustomNextPageContext) {
-    await ctx.store?.fetchCounter(ctx.query["id"] as string)
+    await ctx.store?.counterStore.fetchCounter(ctx.query["id"] as string)
     return {}
   }
 

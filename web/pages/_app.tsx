@@ -3,7 +3,8 @@ import { getSnapshot } from "mobx-state-tree"
 import App, { AppContext, AppInitialProps, AppProps } from "next/app"
 import React from "react"
 import { CustomNextPageContext } from "../interfaces/CustomNextPageContext"
-import { initializeStore, StoreInstance, StoreSnapshotOut } from "../stores/store"
+import { initializeStore, StoreInstance, StoreSnapshotOut } from "../store/RootStore"
+import * as Nookies from "nookies"
 
 interface CustomInitalProps {
   initialStoreSnapshot: StoreSnapshotOut
@@ -22,6 +23,15 @@ class CustomApp extends App<Props> {
     const store = initializeStore()
     // Add the store to the app context, so we can use it in getInitialProps of pages
     appContext.ctx.store = store
+
+    // If a session token is provided via Cookie, copy it to the store
+    const jwtCookie = Nookies.parseCookies(appContext.ctx).wljwt
+    if (jwtCookie) {
+      store.authStore.setToken(jwtCookie)
+    } else {
+      store.authStore.unsetToken()
+    }
+
     // If the page to be opened has getInitialProps, run it and provide the page context
     let pageProps = {}
     if (appContext.Component.getInitialProps) {

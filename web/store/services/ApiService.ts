@@ -1,5 +1,4 @@
-import { types, flow, getParentOfType, Instance } from "mobx-state-tree"
-import Axios, { AxiosResponse } from "axios"
+import { flow, getParentOfType, Instance, types } from "mobx-state-tree"
 import { RootStore } from "../RootStore"
 import { IAuthStore } from "../substores/AuthStore"
 import { IHttpService } from "./HttpService"

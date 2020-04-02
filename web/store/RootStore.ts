@@ -1,9 +1,9 @@
 import makeInspectable from "mobx-devtools-mst"
-import { addMiddleware, IMiddlewareHandler, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
-import { AuthStore } from "./substores/AuthStore"
-import { CounterStore } from "./substores/CounterStore"
+import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { ApiService } from "./services/ApiService"
 import { HttpService } from "./services/HttpService"
+import { AuthStore } from "./substores/AuthStore"
+import { CounterStore } from "./substores/CounterStore"
 
 export type StoreInstance = Instance<typeof RootStore>
 export type StoreSnapshotIn = SnapshotIn<typeof RootStore>

@@ -18,7 +18,7 @@ class CounterComponent extends React.Component<Props> {
             {this.props.counter.name}: {this.props.counter.value}
           </a>
         </Link>{" "}
-        <input type="button" value="Count up" onClick={() => this.props.counter.countUp()} />
+        <input type="button" value="Count up" onClick={() => this.props.counter.countUpBy(1)} />
       </li>
     )
   }

@@ -12,5 +12,8 @@ export const Counter = types
     const countUp = () => {
       self.value++
     }
-    return { countUp }
+    const countUpBy = (step: number) => {
+      self.value += step
+    }
+    return { countUp, countUpBy }
   })

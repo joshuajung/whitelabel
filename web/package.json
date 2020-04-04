@@ -10,6 +10,7 @@
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.3.0",
     "axios": "^0.19.2",
+    "class-validator": "^0.11.1",
     "file-loader": "^6.0.0",
     "mobx": "^5.9.0",
     "mobx-devtools-mst": "^0.9.21",

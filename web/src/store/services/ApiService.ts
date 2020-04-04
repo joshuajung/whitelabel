@@ -8,8 +8,9 @@ export interface IApiService extends Instance<typeof ApiService> {}
 export const ApiService = types
   .model()
   .views((self) => ({
-    get sessionToken() {
-      const authStore: IAuthStore = getParentOfType(self, RootStore).authStore
+    get sessionToken(): string | undefined {
+      // We are reverting to "any" here to break a circular dependency
+      const authStore: any = getParentOfType(self, RootStore).authStore
       return authStore.sessionToken
     },
   }))

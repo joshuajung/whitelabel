@@ -5,6 +5,7 @@ import { withRouter } from "next/router"
 import { WithRouterProps } from "next/dist/client/with-router"
 import { Audience } from "./Audience"
 import authorizations from "./authorizations"
+import NotAuthorizedComponent from "../components/NotAuthorizedComponent"
 
 interface IProps {
   children: React.ReactNode
@@ -29,12 +30,22 @@ class AuthGate extends React.Component<IProps & WithRouterProps> {
 
   private get isAuthorized(): boolean {
     const allowed = this.allowedAudiences.includes(this.currentAudience)
-    console.log("isAuthorized:", this.currentAudience, this.allowedAudiences, allowed)
     return allowed
   }
 
   public render() {
-    return <div>{this.isAuthorized ? this.props.children : <div>AuthGate</div>}</div>
+    return (
+      <div>
+        {this.isAuthorized ? (
+          this.props.children
+        ) : (
+          <NotAuthorizedComponent
+            isSignedIn={this.props.store?.authStore.isSignedIn ?? false}
+            signIn={this.props.store?.authStore.signIn ?? ((d) => null)}
+          />
+        )}
+      </div>
+    )
   }
 }
 

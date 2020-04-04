@@ -21,5 +21,10 @@ module.exports = (phase, { defaultConfig }) => {
   // Add support for webfonts
   configuration = withFonts(configuration)
 
+  // This is needed to support symlinked shared DTOs
+  configuration.webpack = (config) => {
+    return { ...config, resolve: { ...config.resolve, symlinks: false } }
+  }
+
   return configuration
 }

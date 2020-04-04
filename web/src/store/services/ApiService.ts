@@ -1,5 +1,5 @@
 import { flow, getParentOfType, Instance, types, getEnv } from "mobx-state-tree"
-import { RootStore } from "../RootStore"
+import { RootStore, IRootStore } from "../RootStore"
 import { IAuthStore } from "../substores/AuthStore"
 import { IHttpService } from "./HttpService"
 import { IRuntimeConfig } from "../../interfaces/RuntimeConfig"
@@ -9,14 +9,14 @@ export const ApiService = types
   .model()
   .views((self) => ({
     get sessionToken(): string | undefined {
-      // We are reverting to "any" here to break a circular dependency
-      const authStore: any = getParentOfType(self, RootStore).authStore
+      const authStore: IAuthStore = getParentOfType(self, RootStore).authStore
       return authStore.sessionToken
     },
   }))
   .volatile((self) => {
     // Private
-    const httpService: IHttpService = getParentOfType(self, RootStore).httpService
+    const rootStore: IRootStore = getParentOfType(self, RootStore)
+    const httpService: IHttpService = rootStore.httpService
     const config = getEnv(self).config as IRuntimeConfig
     // Public
     const get = flow(function* (endpoint: string) {

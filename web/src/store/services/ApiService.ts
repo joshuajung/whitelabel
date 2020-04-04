@@ -19,10 +19,10 @@ export const ApiService = types
     const config = getEnv(self).config as RuntimeConfig
     // Public
     const get = flow(function* (endpoint: string) {
-      return httpService.get(config.publicRuntimeConfig.apiUrl + endpoint, self.sessionToken)
+      return httpService.get(`${config.publicRuntimeConfig.apiUrl}/${endpoint}`, self.sessionToken)
     })
     const post = flow(function* (endpoint: string, body: any) {
-      return httpService.post(config.publicRuntimeConfig.apiUrl + endpoint, body, self.sessionToken)
+      return httpService.post(`${config.publicRuntimeConfig.apiUrl}/${endpoint}`, body, self.sessionToken)
     })
     return { get, post }
   })

@@ -7,7 +7,7 @@ const configuration = {
   // Server Runtime Config will be available to client and server
   publicRuntimeConfig: {
     phase: "DEVELOPMENT",
-    apiUrl: "http://localhost:3000/",
+    apiUrl: "http://localhost:3000",
   },
 }
 

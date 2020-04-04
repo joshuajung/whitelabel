@@ -1,24 +1,28 @@
-import { flow, getParentOfType, Instance, types } from "mobx-state-tree"
+import { flow, getParentOfType, Instance, types, getEnv } from "mobx-state-tree"
 import { RootStore } from "../RootStore"
 import { IAuthStore } from "../substores/AuthStore"
 import { IHttpService } from "./HttpService"
+import { RuntimeConfig } from "../../interfaces/RuntimeConfig"
 
 export interface IApiService extends Instance<typeof ApiService> {}
 export const ApiService = types
   .model()
-  .views(self => ({
+  .views((self) => ({
     get sessionToken() {
       const authStore: IAuthStore = getParentOfType(self, RootStore).authStore
       return authStore.sessionToken
-    }
+    },
   }))
-  .volatile(self => {
+  .volatile((self) => {
+    // Private
     const httpService: IHttpService = getParentOfType(self, RootStore).httpService
-    const get = flow(function*(endpoint: string) {
-      return httpService.get("http://localhost:3000/" + endpoint, self.sessionToken)
+    const config = getEnv(self).config as RuntimeConfig
+    // Public
+    const get = flow(function* (endpoint: string) {
+      return httpService.get(config.publicRuntimeConfig.apiUrl + endpoint, self.sessionToken)
     })
-    const post = flow(function*(endpoint: string, body: any) {
-      return httpService.post("http://localhost:3000/" + endpoint, body, self.sessionToken)
+    const post = flow(function* (endpoint: string, body: any) {
+      return httpService.post(config.publicRuntimeConfig.apiUrl + endpoint, body, self.sessionToken)
     })
     return { get, post }
   })

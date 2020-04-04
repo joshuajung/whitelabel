@@ -1,5 +1,25 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const withFonts = require("next-fonts")
+const developmentConfiguration = require("./configuration/development")
+const productionConfiguration = require("./configuration/production")
+const { PHASE_PRODUCTION_SERVER, PHASE_PRODUCTION_BUILD, PHASE_DEVELOPMENT_SERVER } = require("next/constants")
 
-let configuration = {}
-module.exports = withFonts(configuration)
+module.exports = (phase, { defaultConfig }) => {
+  console.log("Providing Configuration for phase", phase)
+  let configuration = {}
+
+  // Loads phase-specific configuration
+  switch (phase) {
+    case PHASE_DEVELOPMENT_SERVER:
+      configuration = { ...configuration, ...developmentConfiguration }
+      break
+    case PHASE_PRODUCTION_BUILD:
+    case PHASE_PRODUCTION_SERVER:
+      configuration = { ...configuration, ...productionConfiguration }
+      break
+  }
+
+  // Add support for webfonts
+  configuration = withFonts(configuration)
+
+  return configuration
+}

@@ -5,13 +5,14 @@ import { ApiService } from "./services/ApiService"
 import { HttpService } from "./services/HttpService"
 import { AuthStore } from "./substores/AuthStore"
 import { CounterStore } from "./substores/CounterStore"
-import { RuntimeConfig } from "../interfaces/RuntimeConfig"
+import { IRuntimeConfig } from "../interfaces/RuntimeConfig"
 
-const config: RuntimeConfig = getConfig()
+const config: IRuntimeConfig = getConfig()
 export type StoreInstance = Instance<typeof RootStore>
 export type StoreSnapshotIn = SnapshotIn<typeof RootStore>
 export type StoreSnapshotOut = SnapshotOut<typeof RootStore>
 
+export interface IRootStore extends StoreInstance {}
 export const RootStore = types.model({
   counterStore: types.optional(CounterStore, {}),
   authStore: types.optional(AuthStore, {}),

@@ -5,15 +5,15 @@ import CounterComponent from "../../components/CounterComponent"
 import { withRouter } from "next/router"
 import { WithRouterProps } from "next/dist/client/with-router"
 import Head from "next/head"
-import { CustomNextPageContext } from "../../interfaces/CustomNextPageContext"
+import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext"
 
-interface Props {
+interface IProps {
   store?: StoreInstance
 }
 
 @inject("store")
 @observer
-class CounterPage extends React.Component<Props & WithRouterProps> {
+class CounterPage extends React.Component<IProps & WithRouterProps> {
   private get counterId(): string {
     return this.props.router.query.id as string
   }
@@ -22,7 +22,7 @@ class CounterPage extends React.Component<Props & WithRouterProps> {
     return this.props.store?.counterStore.counters.get(this.counterId)
   }
 
-  static async getInitialProps(ctx: CustomNextPageContext) {
+  static async getInitialProps(ctx: ICustomNextPageContext) {
     await ctx.store?.counterStore.fetchCounter(ctx.query["id"] as string)
     return {}
   }

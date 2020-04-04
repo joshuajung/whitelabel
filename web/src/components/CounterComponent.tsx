@@ -4,12 +4,12 @@ import Link from "next/link"
 import { Instance } from "mobx-state-tree"
 import { Counter } from "../store/models/Counter"
 
-interface Props {
+interface IProps {
   counter: Instance<typeof Counter>
 }
 
 @observer
-class CounterComponent extends React.Component<Props> {
+class CounterComponent extends React.Component<IProps> {
   public render() {
     return (
       <li>

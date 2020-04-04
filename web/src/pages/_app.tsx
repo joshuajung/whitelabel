@@ -2,12 +2,13 @@ import { Provider } from "mobx-react"
 import { getSnapshot } from "mobx-state-tree"
 import App, { AppContext, AppInitialProps, AppProps } from "next/app"
 import React from "react"
-import { CustomNextPageContext } from "../interfaces/CustomNextPageContext"
+import { ICustomNextPageContext } from "../interfaces/CustomNextPageContext"
 import { initializeStore, StoreInstance, StoreSnapshotOut } from "../store/RootStore"
 import * as Nookies from "nookies"
 
 // Internal dependencies
 import "../assets/styles/index.scss"
+import AuthGate from "../auth/AuthGate"
 
 interface CustomInitalProps {
   initialStoreSnapshot: StoreSnapshotOut
@@ -15,7 +16,7 @@ interface CustomInitalProps {
 type InitialProps = AppInitialProps & CustomInitalProps
 type Props = AppProps & CustomInitalProps
 
-export type MyAppContext = AppContext & { ctx: CustomNextPageContext }
+export type MyAppContext = AppContext & { ctx: ICustomNextPageContext }
 
 class CustomApp extends App<Props> {
   // This is where we keep our store
@@ -26,7 +27,6 @@ class CustomApp extends App<Props> {
     const store = initializeStore()
     // Add the store to the app context, so we can use it in getInitialProps of pages
     appContext.ctx.store = store
-
     // If a session token is provided via Cookie, copy it to the store
     const jwtCookie = Nookies.parseCookies(appContext.ctx).wljwt
     if (jwtCookie) {
@@ -34,7 +34,6 @@ class CustomApp extends App<Props> {
     } else {
       store.authStore.unsetToken()
     }
-
     // If the page to be opened has getInitialProps, run it and provide the page context
     let pageProps = {}
     if (appContext.Component.getInitialProps) {
@@ -58,7 +57,9 @@ class CustomApp extends App<Props> {
   public render() {
     return (
       <Provider store={this.store}>
-        <this.props.Component {...this.props.pageProps} />
+        <AuthGate>
+          <this.props.Component {...this.props.pageProps} />
+        </AuthGate>
       </Provider>
     )
   }

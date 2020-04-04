@@ -1,4 +1,4 @@
-export interface RuntimeConfig {
+export interface IRuntimeConfig {
   serverRuntimeConfig?: {
     secret: string
   }

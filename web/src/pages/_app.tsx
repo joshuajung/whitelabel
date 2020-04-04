@@ -6,6 +6,9 @@ import { CustomNextPageContext } from "../interfaces/CustomNextPageContext"
 import { initializeStore, StoreInstance, StoreSnapshotOut } from "../store/RootStore"
 import * as Nookies from "nookies"
 
+// Internal dependencies
+import "../assets/styles/index.scss"
+
 interface CustomInitalProps {
   initialStoreSnapshot: StoreSnapshotOut
 }
@@ -41,7 +44,7 @@ class CustomApp extends App<Props> {
     // and it gets serialized and transported to the frontend
     return {
       initialStoreSnapshot: getSnapshot(store),
-      pageProps
+      pageProps,
     }
   }
 

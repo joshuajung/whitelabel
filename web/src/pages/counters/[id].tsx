@@ -1,14 +1,14 @@
 import * as React from "react"
-import { StoreInstance } from "../../store/RootStore"
 import { inject, observer } from "mobx-react"
 import CounterComponent from "../../components/CounterComponent"
 import { withRouter } from "next/router"
 import { WithRouterProps } from "next/dist/client/with-router"
 import Head from "next/head"
 import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext"
+import { IRootStore } from "../../store/RootStore"
 
 interface IProps {
-  store?: StoreInstance
+  store?: IRootStore
 }
 
 @inject("store")

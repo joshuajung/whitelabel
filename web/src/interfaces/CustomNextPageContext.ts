@@ -1,6 +1,6 @@
 import { NextPageContext } from "next"
-import { StoreInstance } from "../store/RootStore"
+import { IRootStore } from "../store/RootStore"
 
 export interface ICustomNextPageContext extends NextPageContext {
-  store?: StoreInstance
+  store?: IRootStore
 }

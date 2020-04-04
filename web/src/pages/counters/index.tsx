@@ -1,11 +1,11 @@
 import { inject, observer } from "mobx-react"
 import React from "react"
 import CounterComponent from "../../components/CounterComponent"
-import { StoreInstance } from "../../store/RootStore"
+import { IRootStore } from "../../store/RootStore"
 import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext"
 
 interface IProps {
-  store?: StoreInstance
+  store?: IRootStore
 }
 
 @inject("store")

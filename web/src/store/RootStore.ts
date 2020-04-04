@@ -8,11 +8,11 @@ import { CounterStore } from "./substores/CounterStore"
 import { IRuntimeConfig } from "../interfaces/RuntimeConfig"
 
 const config: IRuntimeConfig = getConfig()
-export type StoreInstance = Instance<typeof RootStore>
-export type StoreSnapshotIn = SnapshotIn<typeof RootStore>
-export type StoreSnapshotOut = SnapshotOut<typeof RootStore>
+export type RootStoreInstance = Instance<typeof RootStore>
+export type RootStoreSnapshotIn = SnapshotIn<typeof RootStore>
+export type RootStoreSnapshotOut = SnapshotOut<typeof RootStore>
 
-export interface IRootStore extends StoreInstance {}
+export interface IRootStore extends RootStoreInstance {}
 export const RootStore = types.model({
   counterStore: types.optional(CounterStore, {}),
   authStore: types.optional(AuthStore, {}),
@@ -21,7 +21,7 @@ export const RootStore = types.model({
 })
 
 // This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.
-export const initializeStore = (snapshot?: StoreSnapshotIn): StoreInstance => {
+export const initializeStore = (snapshot?: RootStoreSnapshotIn): RootStoreInstance => {
   let store = RootStore.create(snapshot, { config })
   makeInspectable(store)
   return store

@@ -3,24 +3,24 @@ import { getSnapshot } from "mobx-state-tree"
 import App, { AppContext, AppInitialProps, AppProps } from "next/app"
 import React from "react"
 import { ICustomNextPageContext } from "../interfaces/CustomNextPageContext"
-import { initializeStore, StoreInstance, StoreSnapshotOut } from "../store/RootStore"
+import { initializeStore, RootStoreInstance, RootStoreSnapshotOut } from "../store/RootStore"
 import * as Nookies from "nookies"
 
 // Internal dependencies
 import "../assets/styles/index.scss"
 import AuthGate from "../auth/AuthGate"
 
-interface CustomInitalProps {
-  initialStoreSnapshot: StoreSnapshotOut
+interface ICustomInitalProps {
+  initialStoreSnapshot: RootStoreSnapshotOut
 }
-type InitialProps = AppInitialProps & CustomInitalProps
-type Props = AppProps & CustomInitalProps
+type InitialProps = AppInitialProps & ICustomInitalProps
+type Props = AppProps & ICustomInitalProps
 
 export type MyAppContext = AppContext & { ctx: ICustomNextPageContext }
 
 class CustomApp extends App<Props> {
   // This is where we keep our store
-  private store: StoreInstance
+  private store: RootStoreInstance
 
   public static getInitialProps = async (appContext: MyAppContext): Promise<InitialProps> => {
     // Initialize the store already on the server

@@ -1,19 +1,18 @@
-import { types, getParentOfType } from "mobx-state-tree"
-import { RootStore } from "../RootStore"
+import { types } from "mobx-state-tree";
 
 export const Counter = types
   .model({
     id: types.identifier,
     name: types.string,
     currentTime: types.Date,
-    value: types.integer
+    value: types.integer,
   })
-  .actions(self => {
+  .actions((self) => {
     const countUp = () => {
-      self.value++
-    }
+      self.value++;
+    };
     const countUpBy = (step: number) => {
-      self.value += step
-    }
-    return { countUp, countUpBy }
-  })
+      self.value += step;
+    };
+    return { countUp, countUpBy };
+  });

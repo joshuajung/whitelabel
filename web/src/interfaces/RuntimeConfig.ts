@@ -1,10 +1,10 @@
 export interface IRuntimeConfig {
   serverRuntimeConfig?: {
-    secret: string
-  }
+    secret: string;
+  };
   // Server Runtime Config will be available to client and server
   publicRuntimeConfig: {
-    phase: "DEVELOPMENT" | "PRODUCTION"
-    apiUrl: string
-  }
+    phase: "DEVELOPMENT" | "PRODUCTION";
+    apiUrl: string;
+  };
 }

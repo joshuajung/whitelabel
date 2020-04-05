@@ -1,11 +1,11 @@
-import React from "react"
-import { observer } from "mobx-react"
-import Link from "next/link"
-import { Instance } from "mobx-state-tree"
-import { Counter } from "../store/models/Counter"
+import React from "react";
+import { observer } from "mobx-react";
+import Link from "next/link";
+import { Instance } from "mobx-state-tree";
+import { Counter } from "../store/models/Counter";
 
 interface IProps {
-  counter: Instance<typeof Counter>
+  counter: Instance<typeof Counter>;
 }
 
 @observer
@@ -18,10 +18,14 @@ class CounterComponent extends React.Component<IProps> {
             {this.props.counter.name}: {this.props.counter.value}
           </a>
         </Link>{" "}
-        <input type="button" value="Count up" onClick={() => this.props.counter.countUpBy(1)} />
+        <input
+          type="button"
+          value="Count up"
+          onClick={() => this.props.counter.countUpBy(1)}
+        />
       </li>
-    )
+    );
   }
 }
 
-export default CounterComponent
+export default CounterComponent;

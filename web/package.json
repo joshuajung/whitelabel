@@ -5,29 +5,37 @@
     "local": "next -p 3001",
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT"
+    "start": "next start -p $PORT",
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "axios": "^0.19.2",
     "class-validator": "^0.11.1",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-react": "^7.19.0",
     "file-loader": "^6.0.0",
     "mobx": "^5.9.0",
     "mobx-devtools-mst": "^0.9.21",
     "mobx-react": "^6.1.8",
     "mobx-state-tree": "^3.11.0",
-    "next": "^9.3.2",
+    "next": "^9.3.4",
     "next-fonts": "^1.0.3",
     "node-sass": "^4.13.1",
     "nookies": "^2.2.2",
+    "prettier": "^2.0.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.8"
   },
   "devDependencies": {
     "@types/mobx-devtools-mst": "0.9.0",
-    "@types/node": "^13.9.5",
-    "@types/react": "^16.4.12"
+    "@types/node": "^13.11.0",
+    "@types/react": "^16.9.32"
   },
   "license": "UNLICENSED",
   "browserslist": [

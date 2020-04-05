@@ -1,10 +1,10 @@
-import { IsEmail, IsString } from "class-validator"
+import { IsEmail, IsString } from "class-validator";
 
 class SignInPostRequestDto {
   @IsEmail()
-  email!: string
+  email!: string;
   @IsString()
-  password!: string
+  password!: string;
 }
 
-export default SignInPostRequestDto
+export default SignInPostRequestDto;

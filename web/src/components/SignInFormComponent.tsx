@@ -1,19 +1,22 @@
-import React from "react"
-import { observer } from "mobx-react"
-import { SignInFormData, ISignInFormData } from "../store/models/SignInFormData"
+import React from "react";
+import { observer } from "mobx-react";
+import {
+  SignInFormData,
+  ISignInFormData,
+} from "../store/models/SignInFormData";
 
 interface IProps {
-  signIn: (data: ISignInFormData) => any
+  signIn: (data: ISignInFormData) => any;
 }
 
 @observer
 class SignInFormComponent extends React.Component<IProps> {
-  private data = SignInFormData.create()
+  private data = SignInFormData.create();
 
   private onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    this.props.signIn(this.data)
-  }
+    e.preventDefault();
+    this.props.signIn(this.data);
+  };
 
   public render() {
     return (
@@ -34,8 +37,8 @@ class SignInFormComponent extends React.Component<IProps> {
           <input type="submit" value="Anmelden" />
         </div>
       </form>
-    )
+    );
   }
 }
 
-export default SignInFormComponent
+export default SignInFormComponent;

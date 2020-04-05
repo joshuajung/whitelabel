@@ -7,6 +7,6 @@ const configuration = {
     phase: "PRODUCTION",
     apiUrl: process.env.API_URL,
   },
-}
+};
 
-module.exports = configuration
+module.exports = configuration;

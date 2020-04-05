@@ -9,6 +9,6 @@ const configuration = {
     phase: "DEVELOPMENT",
     apiUrl: "http://localhost:3000",
   },
-}
+};
 
-module.exports = configuration
+module.exports = configuration;

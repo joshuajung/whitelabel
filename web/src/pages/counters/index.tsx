@@ -1,19 +1,19 @@
-import { inject, observer } from "mobx-react"
-import React from "react"
-import CounterComponent from "../../components/CounterComponent"
-import { IRootStore } from "../../store/RootStore"
-import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext"
+import { inject, observer } from "mobx-react";
+import React from "react";
+import CounterComponent from "../../components/CounterComponent";
+import { IRootStore } from "../../store/RootStore";
+import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
 
 interface IProps {
-  store?: IRootStore
+  store?: IRootStore;
 }
 
 @inject("store")
 @observer
 class IndexPage extends React.Component<IProps> {
   static async getInitialProps(ctx: ICustomNextPageContext) {
-    await ctx.store?.counterStore.fetchCounters()
-    return {}
+    await ctx.store?.counterStore.fetchCounters();
+    return {};
   }
 
   public render() {
@@ -26,15 +26,21 @@ class IndexPage extends React.Component<IProps> {
           ))}
         </ul>
         <hr />
-        <input value="Fetch All" onClick={() => this.props.store?.counterStore.fetchCounters()} type="button" />
+        <input
+          value="Fetch All"
+          onClick={() => this.props.store?.counterStore.fetchCounters()}
+          type="button"
+        />
         <input
           value="Fetch Single"
-          onClick={() => this.props.store?.counterStore.fetchCounter("demoDtoSingle")}
+          onClick={() =>
+            this.props.store?.counterStore.fetchCounter("demoDtoSingle")
+          }
           type="button"
         />
       </div>
-    )
+    );
   }
 }
 
-export default IndexPage
+export default IndexPage;

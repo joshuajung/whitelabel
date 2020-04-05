@@ -3,6 +3,7 @@ import React from "react";
 import CounterComponent from "../../components/CounterComponent";
 import { IRootStore } from "../../store/RootStore";
 import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
+import HeaderComponent from "../../components/HeaderComponent";
 
 interface IProps {
   store?: IRootStore;
@@ -12,29 +13,33 @@ interface IProps {
 @observer
 class IndexPage extends React.Component<IProps> {
   static async getInitialProps(ctx: ICustomNextPageContext) {
-    await ctx.store?.counterStore.fetchCounters();
+    await ctx.store!.counterStore.fetchCounters();
     return {};
   }
 
   public render() {
     return (
       <div>
+        <HeaderComponent
+          isSignedIn={this.props.store!.authStore.isSignedIn}
+          signOut={this.props.store!.authStore.unsetToken}
+        />
         <p>Counters:</p>
         <ul>
-          {[...this.props.store?.counterStore.counters.values()].map((c) => (
+          {[...this.props.store!.counterStore.counters.values()].map((c) => (
             <CounterComponent counter={c} key={c.id} />
           ))}
         </ul>
         <hr />
         <input
           value="Fetch All"
-          onClick={() => this.props.store?.counterStore.fetchCounters()}
+          onClick={() => this.props.store!.counterStore.fetchCounters()}
           type="button"
         />
         <input
           value="Fetch Single"
           onClick={() =>
-            this.props.store?.counterStore.fetchCounter("demoDtoSingle")
+            this.props.store!.counterStore.fetchCounter("demoDtoSingle")
           }
           type="button"
         />

@@ -15,7 +15,17 @@ class SignInFormComponent extends React.Component<IProps> {
 
   private onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.signIn(this.data);
+    try {
+      this.data.setSigningIn(true);
+      this.data.setSignInFailed(false);
+      await this.props.signIn(this.data);
+      this.data.setSignInFailed(false);
+    } catch (error) {
+      console.log(error);
+      this.data.setSignInFailed(true);
+    } finally {
+      this.data.setSigningIn(false);
+    }
   };
 
   public render() {
@@ -34,7 +44,11 @@ class SignInFormComponent extends React.Component<IProps> {
           onChange={(e) => this.data.setPassword(e.target.value)}
         />
         <div className="form-buttons">
-          <input type="submit" value="Anmelden" />
+          <input
+            type="submit"
+            value={this.data.signingIn ? "Melde an…" : "Anmelden"}
+          />
+          {this.data.signInFailed && <div>Fehler bei der Anmeldung!</div>}
         </div>
       </form>
     );

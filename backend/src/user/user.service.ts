@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "../shared/interfaces/user.interface";
+import { IUser } from "../shared/interfaces/user.interface";
 
 @Injectable()
 export class UserService {
-  private readonly users: User[];
+  private readonly users: IUser[];
 
   constructor() {
     const users = [
@@ -15,7 +15,7 @@ export class UserService {
     this.users = users;
   }
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findOne(email: string): Promise<IUser | undefined> {
     return this.users.find((user) => user.email == email);
   }
 }

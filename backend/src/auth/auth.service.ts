@@ -20,11 +20,10 @@ export class AuthService {
     return null;
   }
 
-  async login(validationResult: string | null) {
-    const payload = { sub: validationResult };
+  async signIn() {
+    const payload = {};
     return {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 }

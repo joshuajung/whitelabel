@@ -6,6 +6,7 @@ import { WithRouterProps } from "next/dist/client/with-router";
 import Head from "next/head";
 import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
 import { IRootStore } from "../../store/RootStore";
+import HeaderComponent from "../../components/HeaderComponent";
 
 interface IProps {
   store?: IRootStore;
@@ -19,11 +20,11 @@ class CounterPage extends React.Component<IProps & WithRouterProps> {
   }
 
   private get counter() {
-    return this.props.store?.counterStore.counters.get(this.counterId);
+    return this.props.store!.counterStore.counters.get(this.counterId);
   }
 
   static async getInitialProps(ctx: ICustomNextPageContext) {
-    await ctx.store?.counterStore.fetchCounter(ctx.query["id"] as string);
+    await ctx.store!.counterStore.fetchCounter(ctx.query["id"] as string);
     return {};
   }
 
@@ -33,6 +34,10 @@ class CounterPage extends React.Component<IProps & WithRouterProps> {
         <Head>
           <title>Counter: {this.counter?.name}</title>
         </Head>
+        <HeaderComponent
+          isSignedIn={this.props.store!.authStore.isSignedIn}
+          signOut={this.props.store!.authStore.unsetToken}
+        />
         <h1>Detail Page for {this.props.router?.query.id}</h1>
         <ul>
           {this.counter ? (

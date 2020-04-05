@@ -1,10 +1,9 @@
 import { IsEmail, IsString } from "class-validator";
 
-class SignInPostRequestDto {
+export class SignInPostRequestDto {
   @IsEmail()
-  email!: string;
+  // This property is called "username", because it's what Passport's LocalStrategy expects as a default.
+  username!: string;
   @IsString()
   password!: string;
 }
-
-export default SignInPostRequestDto;

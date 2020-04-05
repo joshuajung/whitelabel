@@ -2,6 +2,8 @@ import { types, Instance, flow, getParentOfType } from "mobx-state-tree";
 import { IApiService } from "../services/ApiService";
 import { RootStore, IRootStore } from "../RootStore";
 import { ISignInFormData } from "../models/SignInFormData";
+import { AxiosResponse } from "axios";
+import { SignInPostResponseDto } from "../../shared/dtos/signIn.post.response.dto";
 
 export const AuthStore = types
   .model({ sessionToken: types.maybe(types.string) })
@@ -22,7 +24,11 @@ export const AuthStore = types
       self.sessionToken = undefined;
     };
     const signIn = flow(function* (data: ISignInFormData) {
-      yield apiService.post("signIn", data.dto);
+      const result: AxiosResponse<SignInPostResponseDto> = yield apiService.post(
+        "auth/signIn",
+        data.dto
+      );
+      setToken(result.data.accessToken);
     });
     return { signIn, setToken, unsetToken };
   });

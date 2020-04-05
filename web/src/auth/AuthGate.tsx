@@ -16,7 +16,7 @@ interface IProps {
 @observer
 class AuthGate extends React.Component<IProps & WithRouterProps> {
   private get currentAudience(): Audience {
-    if (this.props.store?.authStore.sessionToken) {
+    if (this.props.store!.authStore.sessionToken) {
       return Audience.SignedIn;
     } else {
       return Audience.Guest;
@@ -42,8 +42,8 @@ class AuthGate extends React.Component<IProps & WithRouterProps> {
           this.props.children
         ) : (
           <NotAuthorizedComponent
-            isSignedIn={this.props.store?.authStore.isSignedIn ?? false}
-            signIn={this.props.store?.authStore.signIn ?? (() => null)}
+            isSignedIn={this.props.store!.authStore.isSignedIn ?? false}
+            signIn={this.props.store!.authStore.signIn ?? (() => null)}
           />
         )}
       </div>

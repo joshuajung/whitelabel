@@ -22,6 +22,8 @@ It also uses, but does not necessarily rely on:
 * [ESLint](https://eslint.org) for linting
 * [Prettier](https://prettier.io) for code formatting
 
+Please always feel free to refer to the respective docs. :-)
+
 ## SSR
 Whitelabel leverages server-side rendering by Next.js for increased performance and SEO. As it is primarily intended for fully dynamic web-apps, it does not make use of Next.js's Automatic Static Optimization mechanism, but instead falls back on full SSR for all pages. 
 
@@ -48,7 +50,11 @@ When adding additional configuration properties, ensure to also update the inter
 ## Auth
 Out of the box, Whitelabel uses an `AuthGate` component that reads route-based authorization information from the `src/auth/authorizations.ts` file to serve as a simple gate keeper. Actual authentication and authorization should obviously happen on the server.
 
-When using the included `ApiService` to make API calls, Whitelabel will automatically send the user token from the `AuthStore` with each API request. To persist the token, a cookie is used.
+When using the included `ApiService` to make API calls, Whitelabel will automatically send the user token from the `AuthStore` with each API request. To persist the token, a cookie is used (also see [SSR](#ssr)).
 
 ## Styling
 Whitelabel comes with Sass parsing and an auto-prefixer, so it's possible to write nice and native SCSS without needing to worry too much about browser compatibility. It should also not be necessary to use `Reactstrap` - the SCSS version of Bootstrap is embedded and you can use all components right out of the box (and/or style them by modifying Bootstrap variables beforehand). 
+
+## Upgrading Notes
+In general, Whitelabel is supposed to always support latest versions of all dependencies (obviously take care with major upgrades). There may be temporary exemptions though, to be mentioned here:
+* `@types/mobx-devtools-mst` should stay at `0.9.0`, as later versions have (accidentally?) removed all type information.

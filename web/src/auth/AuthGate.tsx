@@ -1,11 +1,11 @@
-import React from "react";
 import { inject, observer } from "mobx-react";
-import { IRootStore, RootStoreContext } from "../store/RootStore";
-import { withRouter } from "next/router";
 import { WithRouterProps } from "next/dist/client/with-router";
+import { withRouter } from "next/router";
+import React from "react";
+import NotAuthorizedComponent from "../components/NotAuthorizedComponent";
+import { RootStoreContext } from "../store/RootStore";
 import { Audience } from "./Audience";
 import authorizations from "./authorizations";
-import NotAuthorizedComponent from "../components/NotAuthorizedComponent";
 
 interface IProps {
   children: React.ReactNode;

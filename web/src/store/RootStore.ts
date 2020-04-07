@@ -6,6 +6,7 @@ import { HttpService } from "./services/HttpService";
 import { AuthStore } from "./substores/AuthStore";
 import { CounterStore } from "./substores/CounterStore";
 import { IRuntimeConfig } from "../interfaces/RuntimeConfig";
+import React from "react";
 
 const config: IRuntimeConfig = getConfig();
 
@@ -19,6 +20,7 @@ export interface IRootStore extends RootStoreInstance {}
 export type RootStoreInstance = Instance<typeof RootStore>;
 export type RootStoreSnapshotIn = SnapshotIn<typeof RootStore>;
 export type RootStoreSnapshotOut = SnapshotOut<typeof RootStore>;
+export const RootStoreContext = React.createContext<IRootStore>(undefined!);
 
 // This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.
 export const initializeStore = (

@@ -1,26 +1,24 @@
-import * as React from "react";
-import { inject, observer } from "mobx-react";
-import CounterComponent from "../../components/CounterComponent";
-import { withRouter } from "next/router";
+import { observer } from "mobx-react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import Head from "next/head";
-import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
-import { IRootStore } from "../../store/RootStore";
+import { withRouter } from "next/router";
+import * as React from "react";
+import CounterComponent from "../../components/CounterComponent";
 import HeaderComponent from "../../components/HeaderComponent";
+import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
+import { RootStoreContext } from "../../store/RootStore";
 
-interface IProps {
-  store?: IRootStore;
-}
-
-@inject("store")
 @observer
-class CounterPage extends React.Component<IProps & WithRouterProps> {
+class CounterPage extends React.Component<WithRouterProps> {
+  static contextType = RootStoreContext;
+  public context!: React.ContextType<typeof RootStoreContext>;
+
   private get counterId(): string {
     return this.props.router.query.id as string;
   }
 
   private get counter() {
-    return this.props.store!.counterStore.counters.get(this.counterId);
+    return this.context.counterStore.counters.get(this.counterId);
   }
 
   static async getInitialProps(ctx: ICustomNextPageContext) {
@@ -35,8 +33,8 @@ class CounterPage extends React.Component<IProps & WithRouterProps> {
           <title>Counter: {this.counter?.name}</title>
         </Head>
         <HeaderComponent
-          isSignedIn={this.props.store!.authStore.isSignedIn}
-          signOut={this.props.store!.authStore.unsetToken}
+          isSignedIn={this.context.authStore.isSignedIn}
+          signOut={this.context.authStore.unsetToken}
         />
         <h1>Detail Page for {this.props.router?.query.id}</h1>
         <ul>

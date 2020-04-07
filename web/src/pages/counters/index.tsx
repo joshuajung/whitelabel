@@ -1,45 +1,43 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import CounterComponent from "../../components/CounterComponent";
-import { IRootStore } from "../../store/RootStore";
-import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
 import HeaderComponent from "../../components/HeaderComponent";
+import { ICustomNextPageContext } from "../../interfaces/CustomNextPageContext";
+import { RootStoreContext } from "../../store/RootStore";
 
-interface IProps {
-  store?: IRootStore;
-}
-
-@inject("store")
 @observer
-class IndexPage extends React.Component<IProps> {
+class IndexPage extends React.Component {
   static async getInitialProps(ctx: ICustomNextPageContext) {
     await ctx.store!.counterStore.fetchCounters();
     return {};
   }
 
+  static contextType = RootStoreContext;
+  public context!: React.ContextType<typeof RootStoreContext>;
+
   public render() {
     return (
       <div>
         <HeaderComponent
-          isSignedIn={this.props.store!.authStore.isSignedIn}
-          signOut={this.props.store!.authStore.unsetToken}
+          isSignedIn={this.context.authStore.isSignedIn}
+          signOut={this.context.authStore.unsetToken}
         />
         <p>Counters:</p>
         <ul>
-          {[...this.props.store!.counterStore.counters.values()].map((c) => (
+          {[...this.context.counterStore.counters.values()].map((c) => (
             <CounterComponent counter={c} key={c.id} />
           ))}
         </ul>
         <hr />
         <input
           value="Fetch All"
-          onClick={() => this.props.store!.counterStore.fetchCounters()}
+          onClick={() => this.context.counterStore.fetchCounters()}
           type="button"
         />
         <input
           value="Fetch Single"
           onClick={() =>
-            this.props.store!.counterStore.fetchCounter("demoDtoSingle")
+            this.context.counterStore.fetchCounter("demoDtoSingle")
           }
           type="button"
         />

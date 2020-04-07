@@ -7,6 +7,7 @@ import {
   initializeStore,
   RootStoreInstance,
   RootStoreSnapshotOut,
+  RootStoreContext,
 } from "../store/RootStore";
 import * as Nookies from "nookies";
 
@@ -62,11 +63,11 @@ class CustomApp extends App<Props> {
 
   public render() {
     return (
-      <Provider store={this.store}>
+      <RootStoreContext.Provider value={this.store}>
         <AuthGate>
           <this.props.Component {...this.props.pageProps} />
         </AuthGate>
-      </Provider>
+      </RootStoreContext.Provider>
     );
   }
 }

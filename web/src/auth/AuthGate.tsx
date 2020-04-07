@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { IRootStore } from "../store/RootStore";
+import { IRootStore, RootStoreContext } from "../store/RootStore";
 import { withRouter } from "next/router";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { Audience } from "./Audience";
@@ -9,14 +9,16 @@ import NotAuthorizedComponent from "../components/NotAuthorizedComponent";
 
 interface IProps {
   children: React.ReactNode;
-  store?: IRootStore;
 }
 
 @inject("store")
 @observer
-class AuthGate extends React.Component<IProps & WithRouterProps> {
+class AuthGate extends React.Component<WithRouterProps> {
+  static contextType = RootStoreContext;
+  public context!: React.ContextType<typeof RootStoreContext>;
+
   private get currentAudience(): Audience {
-    if (this.props.store!.authStore.sessionToken) {
+    if (this.context.authStore.sessionToken) {
       return Audience.SignedIn;
     } else {
       return Audience.Guest;
@@ -42,8 +44,8 @@ class AuthGate extends React.Component<IProps & WithRouterProps> {
           this.props.children
         ) : (
           <NotAuthorizedComponent
-            isSignedIn={this.props.store!.authStore.isSignedIn ?? false}
-            signIn={this.props.store!.authStore.signIn ?? (() => null)}
+            isSignedIn={this.context.authStore.isSignedIn ?? false}
+            signIn={this.context.authStore.signIn ?? (() => null)}
           />
         )}
       </div>

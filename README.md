@@ -23,14 +23,20 @@ It also uses, but does not necessarily rely on:
 * [Prettier](https://prettier.io) for code formatting
 
 ## SSR
-Whitelabel leverages server-side rendering by Next.js for increased performance and SEO. As it is primarily intended for fully dynamic web-apps, it does not make use of Next.js's Automatic Static Optimization mechanism, but instead falls back on full SSR for all pages. This comes with a few caveats to keep in mind:
+Whitelabel leverages server-side rendering by Next.js for increased performance and SEO. As it is primarily intended for fully dynamic web-apps, it does not make use of Next.js's Automatic Static Optimization mechanism, but instead falls back on full SSR for all pages. 
 
+This comes with a few caveats to keep in mind:
 * It is _not_ possible to read browser _local storage_ in many cases (explicitly within `getInitialProps`). It is therefore not recommended (and usually also not required) to actively use local storage at all (modules may still do so implicitly). 
 * When it comes to persisting an access token to the application between launches, a traditional cookie is a great alternative. These are automatically sent both to the server _and_ available to the client. This enables SSR to even render private data that the cookie enables access to. Whitelabel is preconfigured to look for a cookie called `wljwt` and load it into the auth store when the app boots. Afterwards, the cookie is ignored and the session token from the auth store is used.
 * After SSR, all props and states are serialized, sent to the browser and locally de-serialized again. Only plain JavaScript `Objects` survive this procedure, custom prototypes will be lost. While MobX-state-tree automatically serializes and restores the root store, so it can fully recover, you may want to keep this in mind for page-specific states. 
 
 ## State Management
-Whitelabel uses Mob
+Whitelabel uses MobX-state-tree to manage its main application state, at home at `src/store/RootStore.ts`. It can be extended by additional substores and services (see `src/store/substores` and `src/store/services` respectively). These can in return use reusable store models (see `src/store/models`). Models can also be used in entirely separate, decentralized states (e.g. in ephemeral component states).
+
+Some things to keep in mind:
+* Every sub-tree of the store that may be referenced from another location of the same store should come with an interface of the form `interface IMyNode extends Instance<typeof MyNode> {}` to avoid circular dependencies that can break TypeScript and to increase performance, also see https://github.com/mobxjs/mobx-state-tree/issues/1406.
+* Services should always offer their features in the `volatile` part of their tree type.
+* Usage of `async` and `await` within (volatile) actions is discouraged, instead use `flow` and `yield` (see https://mobx-state-tree.js.org/concepts/async-actions). 
 
 ## Configuration Management
 Whitelabel leverages Next.js configuration handling to make sure secrets stay on the server (`serverRuntimeConfig`) while publicly required information (e.g. API location) is also provided to the client (`publicRuntimeConfig`). 
@@ -40,3 +46,4 @@ Both collections can be configured in the `configuration` directory, where two s
 When adding additional configuration properties, ensure to also update the interface at `src/interfaces/RuntimeConfig.ts`. Configuration can be accessed using `getConfig()` from `next/config` and by using the `config` environment inside the MST tree.
 
 ## Styling
+Whitelabel comes with Sass parsing and an auto-prefixer, so it's possible to write nice and native SCSS without needing to worry too much about browser compatibility. It should also not be necessary to use `Reactstrap` - the SCSS version of Bootstrap is embedded and you can use all components right out of the box (and/or style them by modifying Bootstrap variables beforehand). 

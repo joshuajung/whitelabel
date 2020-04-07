@@ -45,5 +45,10 @@ Both collections can be configured in the `configuration` directory, where two s
 
 When adding additional configuration properties, ensure to also update the interface at `src/interfaces/RuntimeConfig.ts`. Configuration can be accessed using `getConfig()` from `next/config` and by using the `config` environment inside the MST tree.
 
+## Auth
+Out of the box, Whitelabel uses an `AuthGate` component that reads route-based authorization information from the `src/auth/authorizations.ts` file to serve as a simple gate keeper. Actual authentication and authorization should obviously happen on the server.
+
+When using the included `ApiService` to make API calls, Whitelabel will automatically send the user token from the `AuthStore` with each API request. To persist the token, a cookie is used.
+
 ## Styling
 Whitelabel comes with Sass parsing and an auto-prefixer, so it's possible to write nice and native SCSS without needing to worry too much about browser compatibility. It should also not be necessary to use `Reactstrap` - the SCSS version of Bootstrap is embedded and you can use all components right out of the box (and/or style them by modifying Bootstrap variables beforehand). 

@@ -20,6 +20,7 @@ export interface IRootStore extends RootStoreInstance {}
 export type RootStoreInstance = Instance<typeof RootStore>;
 export type RootStoreSnapshotIn = SnapshotIn<typeof RootStore>;
 export type RootStoreSnapshotOut = SnapshotOut<typeof RootStore>;
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export const RootStoreContext = React.createContext<IRootStore>(undefined!);
 
 // This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.

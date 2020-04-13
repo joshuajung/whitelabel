@@ -1,32 +1,51 @@
-import makeInspectable from "mobx-devtools-mst";
+import { computed, transaction } from "mobx";
 import getConfig from "next/config";
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
+import React from "react";
+import { object, serializable, update } from "serializr";
+import { IRuntimeConfig } from "../interfaces/RuntimeConfig";
 import { ApiService } from "./services/ApiService";
 import { HttpService } from "./services/HttpService";
 import { AuthStore } from "./substores/AuthStore";
 import { CounterStore } from "./substores/CounterStore";
-import { IRuntimeConfig } from "../interfaces/RuntimeConfig";
-import React from "react";
+import { DevStore } from "./substores/DevStore";
 
-const config: IRuntimeConfig = getConfig();
+export class RootStore {
+  @serializable(object(AuthStore))
+  public authStore: AuthStore;
+  @serializable(object(CounterStore))
+  public counterStore: CounterStore;
+  public devStore: DevStore;
 
-export const RootStore = types.model({
-  counterStore: types.optional(CounterStore, {}),
-  authStore: types.optional(AuthStore, {}),
-  httpService: types.optional(HttpService, {}),
-  apiService: types.optional(ApiService, {}),
-});
-export interface IRootStore extends RootStoreInstance {}
-export type RootStoreInstance = Instance<typeof RootStore>;
-export type RootStoreSnapshotIn = SnapshotIn<typeof RootStore>;
-export type RootStoreSnapshotOut = SnapshotOut<typeof RootStore>;
-export const RootStoreContext = React.createContext<IRootStore>(undefined!);
+  public apiService: ApiService;
+  public httpService: HttpService;
 
-// This is something we only to for Next.js in this complexity. It's not required by MST/Mobx.
-export const initializeStore = (
-  snapshot?: RootStoreSnapshotIn
-): RootStoreInstance => {
-  const store = RootStore.create(snapshot, { config });
-  makeInspectable(store);
+  constructor() {
+    this.authStore = new AuthStore();
+    this.counterStore = new CounterStore();
+    this.devStore = new DevStore();
+    this.apiService = new ApiService(this);
+    this.httpService = new HttpService(this);
+  }
+
+  @computed public get config(): IRuntimeConfig {
+    return getConfig();
+  }
+}
+export interface IRootStore extends RootStore {}
+export type SerializedRootStore = unknown;
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const RootStoreContext = React.createContext<RootStore>(undefined!);
+
+export const initializeStore = (snapshot?: SerializedRootStore): RootStore => {
+  const store = new RootStore();
+  try {
+    if (snapshot) {
+      transaction(() => {
+        update(RootStore, store, snapshot, () =>
+          console.log("Deserialization is complete.")
+        );
+      });
+    }
+  } catch (error) {}
   return store;
 };

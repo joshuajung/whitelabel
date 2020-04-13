@@ -1,10 +1,10 @@
 import React from "react";
 import SignInFormComponent from "./SignInFormComponent";
-import { ISignInFormData } from "../store/models/SignInFormData";
+import { SignInPostRequestDto } from "../shared/dtos/signIn.post.request.dto";
 
 interface IProps {
   isSignedIn: boolean;
-  signIn: (data: ISignInFormData) => any;
+  signIn: (data: SignInPostRequestDto) => any;
 }
 
 class NotAuthorizedComponent extends React.Component<IProps> {

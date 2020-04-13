@@ -1,42 +1,28 @@
-import { types, Instance, flow, getParentOfType } from "mobx-state-tree";
-import { IApiService } from "../services/ApiService";
-import { RootStore, IRootStore } from "../RootStore";
-import { ISignInFormData } from "../models/SignInFormData";
-import { AxiosResponse } from "axios";
-import { SignInPostResponseDto } from "../../shared/dtos/signIn.post.response.dto";
+import { action, computed, observable } from "mobx";
 import * as Nookies from "nookies";
+import { IRootStore } from "../RootStore";
+import { SignInPostRequestDto } from "../../shared/dtos/signIn.post.request.dto";
+import { serializable } from "serializr";
 
-export const AuthStore = types
-  .model({ sessionToken: types.maybe(types.string) })
-  .views((self) => ({
-    get isSignedIn() {
-      return !!self.sessionToken;
-    },
-  }))
-  .actions((self) => {
-    // Private
-    const rootStore: IRootStore = getParentOfType(self, RootStore);
-    const apiService: IApiService = rootStore.apiService;
-    // Public
-    const setToken = (token: string) => {
-      self.sessionToken = token;
-      Nookies.setCookie(null, "wljwt", token, {
-        maxAge: 365 * 24 * 60 * 60,
-        path: "/",
-      });
-    };
-    const unsetToken = () => {
-      self.sessionToken = undefined;
-      Nookies.destroyCookie(null, "wljwt", {});
-    };
-    const signIn = flow(function* (data: ISignInFormData) {
-      const result: AxiosResponse<SignInPostResponseDto> = yield apiService.post(
-        "auth/signIn",
-        data.dto
-      );
-      setToken(result.data.accessToken);
+export class AuthStore {
+  @observable @serializable public sessionToken?: string;
+  @computed public get isSignedIn(): boolean {
+    return !!this.sessionToken;
+  }
+  @action public setToken = (token: string) => {
+    this.sessionToken = token;
+    Nookies.setCookie(null, "wljwt", token, {
+      maxAge: 365 * 24 * 60 * 60,
+      path: "/",
     });
-    return { signIn, setToken, unsetToken };
-  });
-// We need these interfaces, see https://github.com/mobxjs/mobx-state-tree/issues/1406
-export interface IAuthStore extends Instance<typeof AuthStore> {}
+  };
+  @action public unsetToken = () => {
+    this.sessionToken = undefined;
+    Nookies.destroyCookie(null, "wljwt", {});
+  };
+  public signIn = async (rs: IRootStore, dto: SignInPostRequestDto) => {
+    const result = await rs.apiService.post("auth/signIn", dto);
+    this.setToken(result.data.accessToken);
+  };
+}
+export interface IAuthStore extends AuthStore {}

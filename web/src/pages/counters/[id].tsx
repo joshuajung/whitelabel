@@ -18,11 +18,16 @@ class CounterPage extends React.Component<WithRouterProps> {
   }
 
   private get counter() {
-    return this.context.counterStore.counters.get(this.counterId);
+    return this.context.counterStore.counters.find(
+      (c) => c.id === this.counterId
+    );
   }
 
   static async getInitialProps(ctx: ICustomNextPageContext) {
-    await ctx.store!.counterStore.fetchCounter(ctx.query["id"] as string);
+    await ctx.store?.counterStore.fetchCounter(
+      ctx.store,
+      ctx.query["id"] as string
+    );
     return {};
   }
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
-import { Instance } from "mobx-state-tree";
 import { Counter } from "../store/models/Counter";
 
 interface IProps {
-  counter: Instance<typeof Counter>;
+  counter: Counter;
 }
 
 @observer

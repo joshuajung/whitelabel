@@ -1,30 +1,30 @@
-import React from "react";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
-import {
-  SignInFormData,
-  ISignInFormData,
-} from "../store/models/SignInFormData";
+import React from "react";
+import { SignInPostRequestDto } from "../shared/dtos/signIn.post.request.dto";
 
 interface IProps {
-  signIn: (data: ISignInFormData) => any;
+  signIn: (dto: SignInPostRequestDto) => any;
 }
 
 @observer
 class SignInFormComponent extends React.Component<IProps> {
-  private data = SignInFormData.create();
+  @observable private dto: SignInPostRequestDto = new SignInPostRequestDto();
+  @observable private signingIn = false;
+  @observable private signInFailed = false;
 
   private onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      this.data.setSigningIn(true);
-      this.data.setSignInFailed(false);
-      await this.props.signIn(this.data);
-      this.data.setSignInFailed(false);
+      this.signingIn = true;
+      this.signInFailed = false;
+      await this.props.signIn(this.dto);
+      this.signInFailed = false;
     } catch (error) {
       console.log(error);
-      this.data.setSignInFailed(true);
+      this.signInFailed = true;
     } finally {
-      this.data.setSigningIn(false);
+      this.signingIn = false;
     }
   };
 
@@ -34,21 +34,21 @@ class SignInFormComponent extends React.Component<IProps> {
         <input
           type="email"
           placeholder="E-Mail"
-          value={this.data.email}
-          onChange={(e) => this.data.setEmail(e.target.value)}
+          value={this.dto.username}
+          onChange={(e) => (this.dto.username = e.target.value)}
         />
         <input
           type="password"
           placeholder="Passwort"
-          value={this.data.password}
-          onChange={(e) => this.data.setPassword(e.target.value)}
+          value={this.dto.password}
+          onChange={(e) => (this.dto.password = e.target.value)}
         />
         <div className="form-buttons">
           <input
             type="submit"
-            value={this.data.signingIn ? "Melde an…" : "Anmelden"}
+            value={this.signingIn ? "Melde an…" : "Anmelden"}
           />
-          {this.data.signInFailed && <div>Fehler bei der Anmeldung!</div>}
+          {this.signInFailed && <div>Fehler bei der Anmeldung!</div>}
         </div>
       </form>
     );

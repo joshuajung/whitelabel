@@ -1,16 +1,22 @@
 import Axios from "axios";
-import { flow, Instance, types } from "mobx-state-tree";
+import { IRootStore } from "../RootStore";
 
-export const HttpService = types.model().volatile(() => ({
-  get: flow(function* (url: string, bearerToken?: string) {
-    return yield Axios.get(url, {
+export class HttpService {
+  private rootStore: IRootStore;
+  constructor(rootStore: IRootStore) {
+    this.rootStore = rootStore;
+  }
+
+  public get = async (url: string, bearerToken?: string) => {
+    return Axios.get(url, {
       headers: bearerToken ? { Authorization: `Bearer: ${bearerToken}` } : {},
     });
-  }),
-  post: flow(function* (url: string, body: any, bearerToken?: string) {
-    return yield Axios.post(url, body, {
+  };
+
+  public post = async (url: string, body: any, bearerToken?: string) => {
+    return Axios.post(url, body, {
       headers: bearerToken ? { Authorization: `Bearer: ${bearerToken}` } : {},
     });
-  }),
-}));
-export interface IHttpService extends Instance<typeof HttpService> {}
+  };
+}
+export interface IHttpService extends HttpService {}

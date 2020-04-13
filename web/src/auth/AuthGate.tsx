@@ -1,4 +1,4 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { WithRouterProps } from "next/dist/client/with-router";
 import { withRouter } from "next/router";
 import React from "react";
@@ -11,7 +11,6 @@ interface IProps {
   children: React.ReactNode;
 }
 
-@inject("store")
 @observer
 class AuthGate extends React.Component<WithRouterProps> {
   static contextType = RootStoreContext;
@@ -45,7 +44,7 @@ class AuthGate extends React.Component<WithRouterProps> {
         ) : (
           <NotAuthorizedComponent
             isSignedIn={this.context.authStore.isSignedIn ?? false}
-            signIn={this.context.authStore.signIn ?? (() => null)}
+            signIn={(dto) => this.context.authStore.signIn(this.context, dto)}
           />
         )}
       </div>

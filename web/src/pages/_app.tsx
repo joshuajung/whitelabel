@@ -1,22 +1,20 @@
-import { Provider } from "mobx-react";
-import { getSnapshot } from "mobx-state-tree";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
-import React from "react";
-import { ICustomNextPageContext } from "../interfaces/CustomNextPageContext";
-import {
-  initializeStore,
-  RootStoreInstance,
-  RootStoreSnapshotOut,
-  RootStoreContext,
-} from "../store/RootStore";
 import * as Nookies from "nookies";
-
+import React from "react";
+import { serialize } from "serializr";
 // Internal dependencies
 import "../assets/styles/index.scss";
 import AuthGate from "../auth/AuthGate";
+import { ICustomNextPageContext } from "../interfaces/CustomNextPageContext";
+import {
+  initializeStore,
+  RootStore,
+  RootStoreContext,
+  SerializedRootStore,
+} from "../store/RootStore";
 
 interface ICustomInitalProps {
-  initialStoreSnapshot: RootStoreSnapshotOut;
+  initialStoreSnapshot: SerializedRootStore;
 }
 type InitialProps = AppInitialProps & ICustomInitalProps;
 type Props = AppProps & ICustomInitalProps;
@@ -25,7 +23,7 @@ export type MyAppContext = AppContext & { ctx: ICustomNextPageContext };
 
 class CustomApp extends App<Props> {
   // This is where we keep our store
-  private store: RootStoreInstance;
+  private store: RootStore;
 
   public static getInitialProps = async (
     appContext: MyAppContext
@@ -49,7 +47,7 @@ class CustomApp extends App<Props> {
     // Provide the snapshot of the just created store, so we can reuse it in the constructor
     // and it gets serialized and transported to the frontend
     return {
-      initialStoreSnapshot: getSnapshot(store),
+      initialStoreSnapshot: serialize(store),
       pageProps,
     };
   };

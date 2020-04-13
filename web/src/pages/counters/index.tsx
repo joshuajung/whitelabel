@@ -8,7 +8,7 @@ import { RootStoreContext } from "../../store/RootStore";
 @observer
 class IndexPage extends React.Component {
   static async getInitialProps(ctx: ICustomNextPageContext) {
-    await ctx.store!.counterStore.fetchCounters();
+    await ctx.store?.counterStore.fetchCounters(ctx.store);
     return {};
   }
 
@@ -24,20 +24,23 @@ class IndexPage extends React.Component {
         />
         <p>Counters:</p>
         <ul>
-          {[...this.context.counterStore.counters.values()].map((c) => (
+          {this.context.counterStore.counters.map((c) => (
             <CounterComponent counter={c} key={c.id} />
           ))}
         </ul>
         <hr />
         <input
           value="Fetch All"
-          onClick={() => this.context.counterStore.fetchCounters()}
+          onClick={() => this.context.counterStore.fetchCounters(this.context)}
           type="button"
         />
         <input
           value="Fetch Single"
           onClick={() =>
-            this.context.counterStore.fetchCounter("demoDtoSingle")
+            this.context.counterStore.fetchCounter(
+              this.context,
+              "demoDtoSingle"
+            )
           }
           type="button"
         />

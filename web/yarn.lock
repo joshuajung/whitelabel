@@ -971,11 +971,6 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
 
-"@types/mobx-devtools-mst@0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@types/mobx-devtools-mst/-/mobx-devtools-mst-0.9.0.tgz#eef2fa04d74914bc1bb1857475f46490ebd23d7a"
-  integrity sha512-17xwXau7im+1Ci5uad1M4fhNh/x7kNXUrQ8+9bJsSw2y1Vu97ftAxKD+60eQ641nHkWKW+7CxaDtXoyDKKaeTg==
-
 "@types/node@^13.11.0":
   version "13.11.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.0.tgz#390ea202539c61c8fa6ba4428b57e05bc36dc47b"
@@ -4093,11 +4088,6 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mobx-devtools-mst@^0.9.21:
-  version "0.9.21"
-  resolved "https://registry.yarnpkg.com/mobx-devtools-mst/-/mobx-devtools-mst-0.9.21.tgz#430c52131d82b7ef24281baaae64e552908afa91"
-  integrity sha512-eyGtucp9zXunzRjYZjXsaQ18/riOy8bdW2a14YIQ96ZPhLXXnR0zivIUyJ35ZC3o5Nd+kpUzqrm/8jCf8zjLyQ==
-
 mobx-react-lite@^1.4.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-1.5.2.tgz#c4395b0568b9cb16f07669d8869cc4efa1b8656d"
@@ -4109,11 +4099,6 @@ mobx-react@^6.1.8:
   integrity sha512-NCMJn/hrWoeyeNbzCsBDtftWSy6VlFgw1VzhogrciPFvJIl2xs+8rJJdPlRHQTiNirwNoHNKJgUE4WhPZPvKDw==
   dependencies:
     mobx-react-lite "^1.4.2"
-
-mobx-state-tree@^3.11.0:
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-3.15.0.tgz#62efb04acb3562c251f043d6a2624b783887054b"
-  integrity sha512-65vvHPBWlz1gmZggbMAdg9ZSEVMGtyLj0drPDTYo/yMv8NVel52mNgBUKxDYWsNU9XMX4GM71wABhx7fD8s0Uw==
 
 mobx@^5.9.0:
   version "5.15.4"
@@ -5444,6 +5429,11 @@ serialize-javascript@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-2.1.2.tgz#ecec53b0e0317bdc95ef76ab7074b7384785fa61"
   integrity sha512-rs9OggEUF0V4jUSecXazOYsLfu7OGK2qIn3c7IPBiffz32XniEp/TX9Xmc9LQfK2nQ2QKHvZ2oygKUGU0lG4jQ==
+
+serializr@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/serializr/-/serializr-2.0.3.tgz#f163b2b39938e1313beaf8457133713df2a936bb"
+  integrity sha512-YHDTg+QE//5vESifXc7vvncxIAiUiX04FAy1RmSgACkwhvJ9DivljDEjqs5WJzg5KLokI3x3jh30KEfXq5nDJA==
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
